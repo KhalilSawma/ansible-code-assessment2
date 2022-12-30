@@ -1,0 +1,20 @@
+- name: "assessment2"
+  hosts: all
+  become: true
+  tasks:
+    - name: "cloning the java app git repo"
+      ansible.builtin.git:
+        repo: https://github.com/KhalilSawma/addressbook.git
+        dest: /home/assessment2
+        clone: yes
+      ignore_errors: yes
+
+    - name: "installing maven on worker node"
+      apt:
+        name: maven
+        state: present
+        update_cache: yes
+      become: true
+
+    - name: "package the maven java app"
+      command: chdir=/home/assessment2 mvn package
